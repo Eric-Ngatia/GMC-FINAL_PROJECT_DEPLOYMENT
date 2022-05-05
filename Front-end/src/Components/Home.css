@@ -1,0 +1,4 @@
+.category__item:hover a{
+    transition: ease-in 0.3s;
+    font-weight: bold;
+}
