@@ -10,7 +10,7 @@ import SignUp from './Components/SignUp';
 function App() {
   return (
     <Routes>
-      <Route path='/' element= { <SignIn/> } ></Route>
+      < Route path='/' element= { <SignIn/> } />
       <Route path='/Inscription' element={<SignUp/>} />
       <Route path='/Home' element={<Home/>} />
       <Route path='/AddQuestion' element={<AddQuestion/>} />
