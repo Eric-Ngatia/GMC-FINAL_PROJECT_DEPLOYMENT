@@ -1,14 +1,32 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {faArrowLeftLong} from '@fortawesome/free-solid-svg-icons';
 import {faArrowRightLong} from '@fortawesome/free-solid-svg-icons';
-
-
+import MultiSelect from 'react-multiple-select-dropdown-lite';
+import 'react-multiple-select-dropdown-lite/dist/index.css';
+import { useSelector } from 'react-redux';
 
 function AddQuestion() {
 
+    const [value, setValue] = useState ('')
 
+    const handleChange = val => {
+        setValue(val)
+    }
+
+    let addQuestion = useSelector (state => state.addQuestion)
+
+    const [title, setTitle ] = useState('');
+    const [contained, setContained] = useState('');
+    const [technologies, setTechnologies] = useState('');
+
+    const options = [
+        { label: 'React', value:'React'},
+        { label: 'PHP', value:'PHP'},
+        { label: 'MongoDB', value:'MongoDB'},
+        { label: 'NoSql', value:'NoSql'},
+    ]
 
     return (
         <div className="container my-5">
@@ -24,25 +42,30 @@ function AddQuestion() {
 
                 <form method='POST' class='col-12 row'>
                     <div class='col-12 form-group mt-3 mb-2'>
-                        <label htmlFor="title" class='question_form-label' style={{color:"#031b4e"}}>Titre de la question</label>
-                        <input type="text" class='form-control' id='title' name='title' />
+                        <label htmlFor="title" class='question_form-label' style={{color:"#031b4e"}}> Titre de la question </label>
+                        <input type="text" class='form-control' 
+                            id='title' 
+                            name='title'
+                            // onChange={(e) => setTitle(e.target.value)} 
+                        />
                     </div>
 
                     <div class='col-12 form-group my-2'>
-                        <label htmlFor="tile" class='form-label'>Contenu de la question</label>
-                        <textarea name="content" id="content" cols="30" rows="10"class='form-control'></textarea>
+                        <label htmlFor="title" class='form-label'> Contenu de la question </label>
+                        <textarea name="content" id="content" cols="30" rows="10"class='form-control' 
+                            // onChange={(e) => setContained(e.target.value)}
+                        />
                     </div>
 
                     <div class='col-12 form-group my-2'>
                         <label htmlFor="tile" class='form-label'>Catégories / Technologies</label>
-                        <input type="text" class='form-control' id='tilte' name='title' />
-                        <tags class="tagify tagify--noTags tagify--empty" tabindex="-1" aria-expanded="false">
-            <span contenteditable="" tabindex="0" data-placeholder="type something" aria-placeholder="type something" class="tagify__input" role="textbox" aria-autocomplete="both" aria-multiline="false">
-            <span contenteditable="" tabindex="0" data-placeholder="type something" aria-placeholder="type something" class="tagify__input" role="textbox" aria-autocomplete="both" aria-multiline="false"></span>
-            </span>
-</tags>
-
-
+                        <div style={{width:'100%'}}>
+                        <MultiSelect style={{width:'100%'}}
+                            onChange ={handleChange}
+                            options = {options}
+                            // onTecChange={(e) => setTechnologies(e.prevent.value)}
+                        />
+                        </div>
                     </div>
 
                     <div class='col-12 form-group my-3'>

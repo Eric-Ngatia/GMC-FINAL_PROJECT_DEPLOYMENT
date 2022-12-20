@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon server.js"
   },
-  "author": "Eric N'Gatia",
+  "author": "Eric N'Gatia +225 0575770022",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

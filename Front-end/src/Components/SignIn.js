@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.css";
 import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
-const LOGIN_URL = 'http://localhost:4000/login';
+
 
 function SignIn() {
 
-    const {setAuth} = useContext(AuthContext)
+    const {setAuth} = useContext(AuthContext);
+    const LOGIN_URL = 'http://localhost:4000/login';
 
     const emailRef = useRef();
     const errRef = useRef();
@@ -29,24 +31,30 @@ function SignIn() {
         
         try{
             const response = await axios.post( LOGIN_URL,
-                JSON.stringify({email, pwd}), {
+                JSON.stringify({email:email, pwd:pwd}), {
                     headers: {'Content-type':'application/json'},
                     withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
-            // console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ email, pwd, roles, accessToken})
-            setEmail('');
-            setPwd('');
-            setSuccess(true)
+            if(response?.data.token){
+                 // console.log(JSON.stringify(response));
+                const accessToken = response?.data?.accessToken;
+                const roles = response?.data?.roles;
+                setAuth({ email, pwd, roles, accessToken})
+                setEmail('');
+                setPwd('');
+                setSuccess(true)
+            }else{
+                setSuccess(false)
+                setErrMsg (response?.data.message);
+            }
+        
         } catch (err) {
             if (!err?.response) {
                 setErrMsg ('No Server Response');
             } else if (err.response?.status === 400) {
-                setErrMsg ('Missing Email or Password');
+                setErrMsg ('user not found');
             }else if (err.response?.status === 401) {
                 setErrMsg('Unauthorized');
             }else {
@@ -71,9 +79,7 @@ function SignIn() {
                 </section>
             ) :(
                 <section style={{height:"100vh", display:"flex"}}>
-                    <p ref={errRef} className= {errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
-                        {errMsg}
-                    </p>
+                    
                         <div className="container-fluid" style={{height:"100vh", display:"flex", margin:"auto", alignItems:"center"}}>
                             <div className='left' style={{objectFit:"cover", width:"50%", backgroundColor:"#0069ff", height:"95%", borderTopLeftRadius:"15px", borderBottomLeftRadius:"15px"}}>
                                 
@@ -131,6 +137,11 @@ function SignIn() {
                             <form action="" onSubmit={handleSubmit}>
                                 <div className="right" style={{marginLeft:"8rem"}}>
                                     <h1 style={{color:"blue"}}>Se connecter</h1>
+
+                                    <p ref={errRef} className= {errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
+                                        {errMsg}
+                                    </p>
+
                                     <section>
 
                                         <div className="mb-3">
@@ -152,7 +163,7 @@ function SignIn() {
                                                 onChange={(e) => setPwd(e.target.value)} 
                                             />
                                         </div>
-                                            <button type="submit" className="btn btn-primary">Se connecter</button>
+                                            <button type="submit" className="btn btn-primary" >Se connecter</button>
                                     </section>
                                     <p>Si vous n'avez pas de compte veuillez vous <Link to="/Inscription">Vous inscrire</Link> </p>
                                 </div>

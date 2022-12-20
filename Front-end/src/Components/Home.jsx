@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 import  './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRightLong} from '@fortawesome/free-solid-svg-icons';
+import QuestionCard from './Piece/QuestionCard';
+import { useSelector } from 'react-redux';
 
 
 function Home() {
+
+    let addQuestion = useSelector (state => state.addQuestion)
+
     return (
         <div>
             <nav class="navbar navbar-white bg-white">
@@ -13,7 +18,6 @@ function Home() {
                     <a class="navbar-brand">Dev Forum</a>
                     <ul class='d-flex '>
                         <li></li>
-
                         <li>
                             <Link to='/SignUp'> </Link>
                         </li>
@@ -58,12 +62,15 @@ function Home() {
 
                     <div class='col-lg-9 col-md-12'>
                         <div class='d-flex justify-content-between align-item-center'>
-                            <p><span>0</span> Questions</p>
+                            <p> <span> 0 </span> Questions</p>
                             <button class='btn btn-primary '>
                                 <Link style={{textDecoration:"none", color:'white'}} to="/AddQuestion">Poser une question <FontAwesomeIcon icon={faArrowRightLong} /> </Link>
                             </button>
                         </div>
+                        
+                        <QuestionCard />
                     </div>
+                    
                 </div>
 
             </div>
